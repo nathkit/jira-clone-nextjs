@@ -15,7 +15,6 @@ export const useRegister = () => {
         mutationFn: async ({json}) => {
             const response = await client.api.auth.register["$post"]({json});
             const result = await response.json();
-            console.log(result)
             return result;
         },
     });
