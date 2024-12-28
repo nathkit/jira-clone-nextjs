@@ -22,21 +22,22 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 
-const formSchema = z.object({
-    email: z.string().trim().email(),
-    password: z.string().min(1, "Required"),
-})
+import { loginSchema } from "../formSchemas";
+import { useLogin } from "../api/use-login";
 
 function SignInCard() {
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
+    const { mutate } = useLogin();
+    const form = useForm<z.infer<typeof loginSchema>>({
+        resolver: zodResolver(loginSchema),
         defaultValues: {
             email: "",
             password: "",
         }
     })
-    const onSubmit = (values: z.infer<typeof formSchema>): void => {
-        console.log({ values })
+    const onSubmit = (values: z.infer<typeof loginSchema>): void => {
+        mutate({
+            json: values,
+        });
     }
     return (
         <Card className="w-full h-full md:w-[487px] border-none shadow-none">
