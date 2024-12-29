@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useCurrent } from "@/features/auth/api/use-current";
 import { useLogout } from "@/features/auth/api/use-logout";
 import { Button } from "@/components/ui/button";
+import { UserButton } from "@/features/auth/components/user-button";
 
 export default function Home() {
   const router = useRouter();
@@ -19,11 +20,8 @@ export default function Home() {
   }, [data, isLoading, router])
 
   return (
-    <div className="flex flex-col gap-2">
-      Only visible to authorized users.
-      <Button onClick={() => mutate()}>
-        Logout
-      </Button>
+    <div className="">
+      <UserButton />
     </div>
   );
 }
