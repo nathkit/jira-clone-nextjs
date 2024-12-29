@@ -26,7 +26,7 @@ import { loginSchema } from "../formSchemas";
 import { useLogin } from "../api/use-login";
 
 function SignInCard() {
-    const { mutate } = useLogin();
+    const mutation = useLogin();
     const form = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -35,7 +35,7 @@ function SignInCard() {
         }
     })
     const onSubmit = (values: z.infer<typeof loginSchema>): void => {
-        mutate({
+        mutation.mutate({
             json: values,
         });
     }
