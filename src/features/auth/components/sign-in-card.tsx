@@ -1,3 +1,5 @@
+"use client"
+
 import { z } from "zod";
 import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
@@ -84,7 +86,7 @@ function SignInCard() {
                                 </FormItem>
                             )}
                         />
-                        <Button disabled={false} size="lg" className="w-full">
+                        <Button disabled={mutation.isPending} size="lg" className="w-full">
                             Login
                         </Button>
                     </form>
@@ -95,7 +97,7 @@ function SignInCard() {
             </div>
             <CardContent className="p-7 flex flex-col gap-y-4">
                 <Button
-                    disabled={false}
+                    disabled={mutation.isPending}
                     variant="secondary"
                     size="lg"
                     className="w-full"
@@ -104,7 +106,7 @@ function SignInCard() {
                     Login with Google
                 </Button>
                 <Button
-                    disabled={false}
+                    disabled={mutation.isPending}
                     variant="secondary"
                     size="lg"
                     className="w-full"
