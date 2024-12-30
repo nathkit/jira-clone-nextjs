@@ -19,7 +19,7 @@ import {
 export const WorkspaceseSwitcher = () => {
     const workspaceId = useWorkspaceId();
     const router = useRouter();
-    const { data: workspaces } = useGetWorkspaces();
+    const { data: workspaces }  = useGetWorkspaces();
     const { open } = useCreateWorkspaceModal();
 
     const onSelect = (id: string) => {
