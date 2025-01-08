@@ -31,7 +31,7 @@ interface EditWorkspaceFormProps {
 export const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkspaceFormProps) =>{
     const router = useRouter();
     const { mutate, isPending } = useUpdateWorkspace();
-    const { mutate: deleteWorkspace, isPending: isDeletingWorksspace } = useDeleteWorkspace();
+    const { mutate: deleteWorkspace, isPending: isDeletingWorkspace } = useDeleteWorkspace();
 
     const [ DeleteDialog, confirmDelete ] = useConfirm(
         "Delete Workspace",
@@ -58,7 +58,7 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkspaceForm
             param: { workspaceId: initialValues.$id },
         }, {
             onSuccess: () => {
-                router.push("/");
+                window.location.href = "/";
             }
         });
     }
@@ -239,7 +239,7 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkspaceForm
                             size="sm"
                             variant="destructive"
                             type="button"
-                            disabled={isPending}
+                            disabled={isPending || isDeletingWorkspace}
                             onClick={handleDelete}
                         >
                             Delete Workspace
