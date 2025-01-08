@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useConfirm } from "@/hooks/use-confirm";
 import { DottedSeparator } from "@/components/dotted-separator";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,7 +21,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { WorkSpace } from "../types";
 import { updateWorkspaceSchema } from "../schemas";
 import { useUpdateWorkspace } from "../api/use-update-workspace"; 
-import { useConfirm } from "@/hooks/use-confirm";
+import { useDeleteWorkspace } from "../api/use-delete-workspace";
 
 interface EditWorkspaceFormProps {
     onCancel?: () => void;
@@ -30,8 +31,13 @@ interface EditWorkspaceFormProps {
 export const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkspaceFormProps) =>{
     const router = useRouter();
     const { mutate, isPending } = useUpdateWorkspace();
+    const { mutate: deleteWorkspace, isPending: isDeletingWorksspace } = useDeleteWorkspace();
 
-    const [DeleteDialog, confirmDelete] = useConfirm();
+    const [ DeleteDialog, confirmDelete ] = useConfirm(
+        "Delete Workspace",
+        "This action cannot be undone.",
+        "destructive"
+    );
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -42,6 +48,20 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkspaceForm
             image: initialValues.imageUrl ?? "",
         },
     });
+
+    const handleDelete = async () => {
+        const ok = await confirmDelete();
+
+        if (!ok) return;
+
+        deleteWorkspace({
+            param: { workspaceId: initialValues.$id },
+        }, {
+            onSuccess: () => {
+                router.push("/");
+            }
+        });
+    }
 
     const onSubmit = (values: z.infer<typeof updateWorkspaceSchema>) => {
         const finalValues = {
@@ -69,6 +89,7 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkspaceForm
 
     return (
         <div className="flex flex-col gap-y-4">
+            <DeleteDialog />
             <Card className="w-full h-full border-none shadow-none">
                 <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
                     <Button
@@ -219,7 +240,7 @@ export const EditWorkspaceForm = ({ onCancel, initialValues }: EditWorkspaceForm
                             variant="destructive"
                             type="button"
                             disabled={isPending}
-                            onClick={() => {}}
+                            onClick={handleDelete}
                         >
                             Delete Workspace
                         </Button>

@@ -2,8 +2,10 @@ import { useMedia } from "react-use";
 
 import {
     Dialog,
+    DialogTitle,
     DialogContent,
-  } from "@/components/ui/dialog";
+    DialogDescription
+} from "@/components/ui/dialog";
 
   import {
     Drawer,
@@ -19,9 +21,11 @@ interface ResponsiveModalProps {
 export const ResponsiveModal = ({ children, open, onOpenChange }: ResponsiveModalProps) => {
     const isDesktop = useMedia("(min-width: 1024px)", true);
 
-    if (!isDesktop) {
+    if (isDesktop) {
         return (
             <Dialog open={open} onOpenChange={onOpenChange}>
+                <DialogTitle className="hiden"></DialogTitle>
+                <DialogDescription className="hiden"></DialogDescription>
                 <DialogContent className="w-full sm:max-w-lg p-0 border-none overflow-y-auto hide-scrollbar max-h-[85vh]">
                     {children}
                 </DialogContent>
